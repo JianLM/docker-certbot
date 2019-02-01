@@ -4,8 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # ------ RUN  ------ #
 USER root
-RUN rm -R /nginx/etc/*
-ADD ./source/certbot.conf /nginx/etc/certbot.conf
+ADD ./source/certbot.conf /nginx/etc/default.conf
 ADD ./source/certbot.sh /usr/local/bin/certbot-run
 RUN chmod +x /usr/local/bin/certbot-run \
     && chown -R nginx:nginx /nginx
