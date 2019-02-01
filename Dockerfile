@@ -4,9 +4,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # ------ RUN  ------ #
 USER root
-ADD ./source/certbot.conf /var/nginx/conf.d/certbot.conf
+RUN rm -R /nginx/etc/*
+ADD ./source/certbot.conf /nginx/etc/certbot.conf
 ADD ./source/certbot.sh /usr/local/bin/certbot-run
-RUN chmod +x /usr/local/bin/certbot-run
+RUN chmod +x /usr/local/bin/certbot-run \
+    chown -R nginx:nginx /nginx
 
 WORKDIR /opt/certbot
 ENV PATH /opt/certbot/venv/bin:$PATH
