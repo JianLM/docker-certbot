@@ -1,13 +1,12 @@
-# ------ HEADER ------ #
+# :: Header
 FROM 11notes/nginx:stable
 ARG DEBIAN_FRONTEND=noninteractive
 
-# ------ RUN  ------ #
+# :: Run
 USER root
 ADD ./source/certbot.conf /nginx/etc/default.conf
 ADD ./source/certbot.sh /usr/local/bin/certbot-run
-RUN chmod +x /usr/local/bin/certbot-run \
-    && chown -R nginx:nginx /nginx
+RUN chmod +x /usr/local/bin/certbot-run
 
 WORKDIR /opt/certbot
 ENV PATH /opt/certbot/venv/bin:$PATH
@@ -38,11 +37,13 @@ RUN export BUILD_DEPS="git \
     && rm -rf /var/cache/apk/* \
 	&& certbot --version
 
-RUN chown -R nginx:nginx /opt/certbot
+# :: docker -u 1000:1000 (no root initiative)
+RUN chown -R nginx:nginx /opt/certbot \
+    && chown -R nginx:nginx /nginx
+USER nginx
 
-# ------ VOLUMES ------ #
+# :: Volumes
 VOLUME ["/nginx/ssl"]
 
-# ------ CMD/START/STOP ------ #
-USER nginx
+# :: Start
 CMD ["nginx", "-g", "daemon off;"]
