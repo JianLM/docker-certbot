@@ -40,10 +40,10 @@ RUN export BUILD_DEPS="git \
 # :: docker -u 1000:1000 (no root initiative)
 RUN chown -R nginx:nginx /opt/certbot \
     && chown -R nginx:nginx /nginx
-USER nginx
 
 # :: Volumes
 VOLUME ["/nginx/ssl"]
 
 # :: Start
+USER nginx
 CMD ["nginx", "-g", "daemon off;"]
